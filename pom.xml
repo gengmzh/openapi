@@ -7,6 +7,8 @@
 	<version>0.1.0</version>
 	<packaging>war</packaging>
 
+	<!-- mvn package -Pdeploy -->
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven-surefire-plugin.skip>false</maven-surefire-plugin.skip>
@@ -30,7 +32,6 @@
 	<build>
 		<!-- 命令行输入mvn时，默认执行mvn package -->
 		<defaultGoal>package</defaultGoal>
-
 		<plugins>
 			<!-- compiler插件,设定JDK版本 -->
 			<plugin>
@@ -57,7 +58,6 @@
 					<skip>${maven-surefire-plugin.skip}</skip>
 				</configuration>
 			</plugin>
-
 			<!-- war插件,设定webapp目录为/webapp,war名称不带版本号 -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -67,25 +67,30 @@
 					<warSourceDirectory>WebContent</warSourceDirectory>
 				</configuration>
 			</plugin>
-<!-- 
-			resource插件,设定编码
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-resources-plugin</artifactId>
-				<version>2.4</version>
-				<configuration>
-					<encoding>${project.build.sourceEncoding}</encoding>
-				</configuration>
-			</plugin>
-
-			dependency插件
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<version>2.1</version>
-			</plugin>
- -->
 		</plugins>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>deploy</id>
+			<properties>
+				<maven-surefire-plugin.skip>true</maven-surefire-plugin.skip>
+			</properties>
+			<build>
+				<resources>
+					<resource>
+						<directory>src/main/resources</directory>
+					</resource>
+					<resource>
+						<directory>src/main/java</directory>
+						<includes>
+							<include>**/*.xml</include>
+							<include>**/*.properties</include>
+						</includes>
+					</resource>
+				</resources>
+			</build>
+		</profile>
+	</profiles>
 
 </project>

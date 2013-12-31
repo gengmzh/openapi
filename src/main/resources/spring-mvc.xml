@@ -11,7 +11,7 @@
 		<property name="alwaysUseFullPath" value="true" />
 		<property name="interceptors">
 			<list>
-				<!-- <bean class="com.baidu.sigma.api.AuthenticationInterceptor" /> -->
+				<bean class="cn.seddata.openapi.LogginInterceptor" />
 			</list>
 		</property>
 	</bean>

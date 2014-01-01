@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 package cn.seddata.openapi.weather;
 
 import java.io.ByteArrayOutputStream;
@@ -9,93 +12,77 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.stereotype.Service;
 
 /**
+ * 天气信息获取服务
+ * 
  * @author gengmaozhang01
- * @since 2013-12-30 下午10:14:03
+ * @since 2014-1-1 上午8:18:07
  */
-@Controller
-@RequestMapping("/api/weather")
-public class WeatherClient {
+@Service
+public class WeatherClientService {
 
-	private final Log log = LogFactory.getLog(WeatherClient.class);
+	private final Log log = LogFactory.getLog(WeatherClientService.class);
 
 	private int connectTimeout = 60 * 1000;
 	private int readTimeout = 5 * 60 * 1000;
 	private int retry = 3;
 
-	@ResponseBody
-	@RequestMapping(value = "/realtime", method = RequestMethod.GET)
-	public ModelMap getRealtimeWeather(@RequestParam(value = "city", required = false) String citycode)
-			throws Exception {
-		ModelMap model = new ModelMap();
-		// args
+	public Map<String, Object> queryRealtimeWeather(String citycode) throws Exception {
 		if (citycode == null || citycode.isEmpty()) {
-			model.addAttribute("code", 1);
-			model.addAttribute("message", "city is required");
-			return model;
+			throw new IllegalArgumentException("citycode is required");
 		}
 		// request
 		String url = Config.getInstance().getRealtimeUrl(citycode);
 		ObjectMapper mapper = new ObjectMapper();
+		Exception exception = null;
 		for (int i = 0; i < retry; i++) {
 			try {
 				String json = request(url);
 				if (json != null && !json.isEmpty()) {
-					model.addAttribute("code", 0);
 					@SuppressWarnings("unchecked")
 					Map<String, Object> value = mapper.readValue(json, Map.class);
-					model.putAll(value);
-					return model;
+					return value;
 				}
 			} catch (Exception e) {
-				log.error("get realtime weather failed", e);
+				exception = e;
+				log.error("round " + (i + 1) + ", get realtime weather failed", e);
 			}
 		}
 		// result
-		model.addAttribute("code", 1);
-		model.addAttribute("message", "request realtime weather failed");
-		return model;
+		if (exception != null) {
+			throw exception;
+		}
+		return null;
 	}
 
-	@ResponseBody
-	@RequestMapping(value = "/forecast", method = RequestMethod.GET)
-	public ModelMap getForecastWeather(@RequestParam(value = "city", required = false) String citycode)
-			throws Exception {
-		ModelMap model = new ModelMap();
-		// args
+	public Map<String, Object> queryForecastWeather(String citycode) throws Exception {
 		if (citycode == null || citycode.isEmpty()) {
-			model.addAttribute("code", 1);
-			model.addAttribute("message", "city is required");
-			return model;
+			throw new IllegalArgumentException("citycode is required");
 		}
 		// request
 		String url = Config.getInstance().getForecastUrl(citycode);
 		ObjectMapper mapper = new ObjectMapper();
+		Exception exception = null;
 		for (int i = 0; i < retry; i++) {
 			try {
 				String json = request(url);
 				if (json != null && !json.isEmpty()) {
-					model.addAttribute("code", 0);
 					@SuppressWarnings("unchecked")
 					Map<String, Object> value = mapper.readValue(json, Map.class);
-					model.putAll(value);
-					return model;
+					return value;
 				}
 			} catch (Exception e) {
-				log.error("get forecast weather failed", e);
+				exception = e;
+				log.error("round " + (i + 1) + ", get forecast weather failed", e);
 			}
 		}
 		// result
-		model.addAttribute("code", 1);
-		model.addAttribute("message", "request forecast weather failed");
-		return model;
+		if (exception != null) {
+			throw exception;
+		}
+		return null;
 	}
 
 	private String request(String url) throws Exception {

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cn.seddata.openapi;
+package cn.seddat.openapi;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

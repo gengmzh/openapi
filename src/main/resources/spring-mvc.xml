@@ -11,7 +11,7 @@
 		<property name="alwaysUseFullPath" value="true" />
 		<property name="interceptors">
 			<list>
-				<bean class="cn.seddata.openapi.LogginInterceptor" />
+				<bean class="cn.seddat.openapi.LogginInterceptor" />
 			</list>
 		</property>
 	</bean>
@@ -25,6 +25,6 @@
 			</list>
 		</property>
 	</bean>
-	<context:component-scan base-package="cn.seddata.openapi" />
+	<context:component-scan base-package="cn.seddat.openapi" />
 
 </beans>

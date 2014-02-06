@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cn.seddata.openapi.weather;
+package cn.seddat.openapi.weather;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cn.seddat.openapi.weather;
+package cn.seddat.openapi;
 
 import java.util.Arrays;
 

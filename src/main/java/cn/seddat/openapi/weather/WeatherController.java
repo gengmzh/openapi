@@ -27,6 +27,8 @@ public class WeatherController {
 
 	@Autowired
 	private WeatherClientService weatherClientService;
+	@Autowired
+	private AQIClientService aqiClientService;
 
 	@ResponseBody
 	@RequestMapping(value = "/realtime", method = RequestMethod.GET)
@@ -118,6 +120,53 @@ public class WeatherController {
 			model.addAttribute("code", 1);
 			model.addAttribute("message", "request forecast weather failed");
 			log.error("get forecast weather failed", ex);
+		}
+		return model;
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "/aqi", method = RequestMethod.GET)
+	public ModelMap getAirQualityIndex(@RequestParam(value = "city", required = false) String citycode)
+			throws Exception {
+		ModelMap model = new ModelMap();
+		// args
+		if (citycode == null || citycode.isEmpty()) {
+			model.addAttribute("code", 1);
+			model.addAttribute("message", "city is required");
+			return model;
+		}
+		// request
+		try {
+			Map<String, Object> weather = aqiClientService.queryAirQualityIndex(citycode);
+			model.addAttribute("code", 0);
+			model.putAll(weather);
+		} catch (Exception ex) {
+			model.addAttribute("code", 1);
+			model.addAttribute("message", "get AQI failed");
+			log.error("get AQI failed", ex);
+		}
+		return model;
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "/aqi/{citycode}", method = RequestMethod.GET)
+	public ModelMap getAirQualityIndex2(@PathVariable("citycode") String citycode) throws Exception {
+		ModelMap model = new ModelMap();
+		// args
+		if (citycode == null || citycode.isEmpty()) {
+			model.addAttribute("code", 1);
+			model.addAttribute("message", "city is required");
+			return model;
+		}
+		// request
+		try {
+			Map<String, Object> weather = aqiClientService.queryAirQualityIndex(citycode);
+			model.addAttribute("code", 0);
+			model.putAll(weather);
+		} catch (Exception ex) {
+			model.addAttribute("code", 1);
+			model.addAttribute("message", "get AQI failed");
+			log.error("get AQI failed", ex);
 		}
 		return model;
 	}

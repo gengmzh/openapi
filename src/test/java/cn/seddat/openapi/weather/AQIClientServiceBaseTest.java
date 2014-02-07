@@ -21,9 +21,9 @@ public class AQIClientServiceBaseTest extends BaseTest {
 	private AQIClientService aqiClientService;
 
 	@Test
-	public void test_requestPM25() throws Exception {
+	public void test_queryAirQualityIndex() throws Exception {
 
-		Map<String, Object> aqi = aqiClientService.queryAirQualityIndex("101010700");
+		Map<String, Object> aqi = aqiClientService.queryAirQualityIndex("101221501");
 
 		Assert.assertNotNull(aqi);
 		this.println(aqi);

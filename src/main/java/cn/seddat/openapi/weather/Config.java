@@ -50,12 +50,12 @@ public class Config {
 	private String URL_PREFIX_PM25 = "http://www.cnpm25.cn/city/";
 
 	/**
-	 * 获取PM2.5信息页面URL，citycode为城市名称拼音
+	 * 获取AQI信息页面URL，citycode为城市名称拼音
 	 * 
 	 * @author gengmaozhang01
 	 * @since 2014-2-6 下午10:38:22
 	 */
-	public String getPM25Url(String citycode) {
+	public String getAQIUrl(String citycode) {
 		return URL_PREFIX_PM25 + citycode + URL_SUFFIX;
 	}
 

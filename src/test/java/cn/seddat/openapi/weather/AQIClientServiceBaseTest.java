@@ -5,6 +5,7 @@ package cn.seddat.openapi.weather;
 
 import java.util.Map;
 
+import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +24,11 @@ public class AQIClientServiceBaseTest extends BaseTest {
 	@Test
 	public void test_queryAirQualityIndex() throws Exception {
 
-		Map<String, Object> aqi = aqiClientService.queryAirQualityIndex("101221501");
+		Map<String, Object> aqi = aqiClientService.queryAirQualityIndex("101010700");
 
 		Assert.assertNotNull(aqi);
-		this.println(aqi);
+		ObjectMapper mapper = new ObjectMapper();
+		this.println(mapper.writeValueAsString(aqi));
 	}
 
 }

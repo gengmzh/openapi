@@ -156,7 +156,7 @@ public class AQIClientService {
 		if (d > day) { // 上个月
 			cal.add(Calendar.MONTH, -1);
 		}
-		cal.set(Calendar.DAY_OF_MONTH, day);
+		cal.set(Calendar.DAY_OF_MONTH, d);
 		cal.set(Calendar.HOUR_OF_DAY, Integer.parseInt(date.substring(3, 5)));
 		return new SimpleDateFormat("yyyy.MM.dd HH:00").format(cal.getTime());
 	}

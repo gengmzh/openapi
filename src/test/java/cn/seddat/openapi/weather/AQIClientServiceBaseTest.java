@@ -24,7 +24,7 @@ public class AQIClientServiceBaseTest extends BaseTest {
 	@Test
 	public void test_queryAirQualityIndex() throws Exception {
 
-		Map<String, Object> aqi = aqiClientService.queryAirQualityIndex("101010700");
+		Map<String, Object> aqi = aqiClientService.queryAirQualityIndex("101020200");
 
 		Assert.assertNotNull(aqi);
 		ObjectMapper mapper = new ObjectMapper();

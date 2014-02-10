@@ -49,6 +49,12 @@ public class AQIClientService {
 					continue;
 				}
 				String id = ls[0], /* name = ls[1], */aqiCity = (ls.length > 2 ? ls[2] : null);
+				if (id.length() == 5) {
+					c1 = id;
+					c2 = null;
+				} else if (id.length() == 7) {
+					c2 = id;
+				}
 				if (aqiCity == null || aqiCity.isEmpty()) {
 					if (c2 != null) {
 						aqiCity = AQICities.get(c2);
@@ -57,11 +63,8 @@ public class AQIClientService {
 						aqiCity = AQICities.get(c1);
 					}
 				}
-				AQICities.put(id, aqiCity);
-				if (id.length() == 5) {
-					c1 = id;
-				} else if (id.length() == 7) {
-					c2 = id;
+				if (aqiCity != null && !aqiCity.isEmpty()) {
+					AQICities.put(id, aqiCity);
 				}
 			}
 		} finally {

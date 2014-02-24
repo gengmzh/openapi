@@ -16,14 +16,13 @@ import cn.seddat.openapi.BaseTest;
  * @author gengmaozhang01
  * @since 2014-2-6 下午10:16:42
  */
-public class AQIClientServiceBaseTest extends BaseTest {
+public class AQIClientBaseTest extends BaseTest {
 
 	@Autowired
-	private AQIClientService aqiClientService;
+	private AQIClient aqiClientService;
 
 	@Test
 	public void test_queryAirQualityIndex() throws Exception {
-
 		Map<String, Object> aqi = aqiClientService.queryAirQualityIndex("101020200");
 
 		Assert.assertNotNull(aqi);

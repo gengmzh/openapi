@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+	<context:component-scan base-package="cn.seddat.openapi" />
+    
+	<!-- weather -->
+	<!-- mongo -->
+	<!-- 
+	<bean name="weatherMongoClientURI" class="com.mongodb.MongoClientURI">
+		<constructor-arg index="0" type="java.lang.String"
+			value="mongodb://tQHM3bNhLOkS0BFBRuzf8FQP:1Qd6KsPznVbPEMcwIcQDSuCsGXtEk00N@mongo.duapp.com:8908/uvvXXGenNcExeZiblXMG?maxpoolsize=10;waitqueuemultiple=100;connecttimeoutms=300000;sockettimeoutms=1800000;autoConnectRetry=true;safe=true" />
+	</bean>
+	<bean name="weatherMongoClient" class="com.mongodb.MongoClient">
+		<constructor-arg index="0" type="com.mongodb.MongoClientURI" ref="weatherMongoClientURI" />
+	</bean>
+ 	-->
+ 	
+	<!-- scheduler -->
+	<!-- 
+	<bean name="weatherScheduler" class="org.springframework.scheduling.concurrent.ScheduledExecutorFactoryBean"
+		lazy-init="false">
+		<property name="continueScheduledExecutionAfterException" value="true" />
+		<property name="waitForTasksToCompleteOnShutdown" value="true" />
+		<property name="poolSize" value="5" />
+		<property name="threadNamePrefix" value="scheduler-" />
+		<property name="scheduledExecutorTasks">
+			<list>
+				<ref bean="aqiRefresherTask" />
+				<ref bean="weatherRefresherTask" />
+			</list>
+		</property>
+	</bean>
+	<bean id="aqiRefresherTask" class="org.springframework.scheduling.concurrent.ScheduledExecutorTask">
+		<property name="runnable">
+			<bean class="cn.seddat.openapi.weather.AQIRefresher" />
+		</property>
+		<property name="delay" value="60000" />delay 1min on startup
+		<property name="period" value="1800000" />every 30min
+		<property name="fixedRate" value="false" />startup after the previous firing
+	</bean>
+	<bean id="weatherRefresherTask" class="org.springframework.scheduling.concurrent.ScheduledExecutorTask">
+		<property name="runnable">
+			<bean class="cn.seddat.openapi.weather.WeatherRefresher" />
+		</property>
+		<property name="delay" value="60000" />delay 1min on startup
+		<property name="period" value="60000" />every 60 seconds
+		<property name="fixedRate" value="false" />startup after the previous firing
+	</bean>
+ 	-->
+ 	
+</beans>

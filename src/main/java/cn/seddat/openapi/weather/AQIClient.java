@@ -3,15 +3,14 @@
  */
 package cn.seddat.openapi.weather;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,51 +27,12 @@ import com.google.common.collect.Lists;
  * @since 2014-2-6 下午10:05:06
  */
 @Service
-public class AQIClientService {
+public class AQIClient {
+
+	private static final Log log = LogFactory.getLog(AQIClient.class);
 
 	@Autowired
 	private HttpRequest httpRequest;
-
-	private final Map<String, String> AQICities = new HashMap<String, String>();
-
-	public AQIClientService() throws Exception {
-		BufferedReader reader = null;
-		try {
-			InputStream ins = Config.class.getClassLoader().getResourceAsStream(
-					"cn/seddat/openapi/weather/city.properties");
-			reader = new BufferedReader(new InputStreamReader(ins));
-			String c1 = null, c2 = null;
-			String line = null;
-			while ((line = reader.readLine()) != null) {
-				String[] ls = line.split("\t");
-				if (ls.length < 2) {
-					continue;
-				}
-				String id = ls[0], /* name = ls[1], */aqiCity = (ls.length > 2 ? ls[2] : null);
-				if (id.length() == 5) {
-					c1 = id;
-					c2 = null;
-				} else if (id.length() == 7) {
-					c2 = id;
-				}
-				if (aqiCity == null || aqiCity.isEmpty()) {
-					if (c2 != null) {
-						aqiCity = AQICities.get(c2);
-					}
-					if ((aqiCity == null || aqiCity.isEmpty()) && c1 != null) {
-						aqiCity = AQICities.get(c1);
-					}
-				}
-				if (aqiCity != null && !aqiCity.isEmpty()) {
-					AQICities.put(id, aqiCity);
-				}
-			}
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
-		}
-	}
 
 	/**
 	 * 抓取AQI数据
@@ -84,21 +44,18 @@ public class AQIClientService {
 		if (citycode == null || citycode.isEmpty()) {
 			throw new IllegalArgumentException("citycode is required");
 		}
-		String aqiCity = AQICities.get(citycode);
-		if (aqiCity == null || aqiCity.isEmpty()) {
-			throw new IllegalArgumentException("citycode " + citycode + " is illegal, can't find AQI city name");
-		}
 		// request
-		String url = Config.getInstance().getAQIUrl(aqiCity);
+		String url = Config.getInstance().getAQIUrl(citycode);
 		String content = this.request(url);
 		if (content == null || content.isEmpty()) {
 			throw new Exception("query AQI failed, result is empty");
 		}
+		// log.info("AQI content: " + content);
 		// parse
 		Map<String, Object> weatherinfo = new HashMap<String, Object>();
 		weatherinfo.put("cityid", citycode);
 		weatherinfo.put("city", "");
-		weatherinfo.put("AQI_city", aqiCity);
+		// weatherinfo.put("AQI_city", aqiCity);
 		final List<String> lines = Splitter.on('\n').trimResults().omitEmptyStrings().splitToList(content);
 		// 当前检测时间
 		for (String line : lines) {
@@ -141,6 +98,7 @@ public class AQIClientService {
 		weatherinfo.put("daily", daily);
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("weatherinfo", weatherinfo);
+		log.info("AQI: " + result);
 		return result;
 	}
 
@@ -148,6 +106,7 @@ public class AQIClientService {
 		Map<String, String> headers = new HashMap<String, String>();
 		headers.put("Host", "www.cnpm25.cn");
 		headers.put("Referer", "http://www.cnpm25.cn/");
+		headers.put("Accept-Charset", "UTF-8");
 		return httpRequest.request(url, headers);
 	}
 

@@ -3,17 +3,19 @@
  */
 package cn.seddat.openapi;
 
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 
-import cn.seddat.openapi.weather.WeatherClientService;
+import cn.seddat.openapi.weather.WeatherClient;
+
+import com.google.common.base.Charsets;
 
 /**
  * @author gengmaozhang01
@@ -22,7 +24,7 @@ import cn.seddat.openapi.weather.WeatherClientService;
 @Service
 public class HttpRequest {
 
-	private final Log log = LogFactory.getLog(WeatherClientService.class);
+	private final Log log = LogFactory.getLog(WeatherClient.class);
 
 	private int connectTimeout = 60 * 1000;
 	private int readTimeout = 5 * 60 * 1000;
@@ -57,12 +59,13 @@ public class HttpRequest {
 	}
 
 	private String request0(String url, Map<String, String> headers) throws Exception {
-		String content = null;
+		StringBuffer content = new StringBuffer();
 		HttpURLConnection conn = null;
-		InputStream ins = null;
+		InputStreamReader reader = null;
 		try {
 			conn = (HttpURLConnection) new URL(url).openConnection();
 			conn.setRequestProperty("Accept", "*/*");
+			// conn.setRequestProperty("Accept-Charset", "UTF-8");
 			// conn.setRequestProperty("Accept-Encoding", "gzip,deflate,sdch");
 			conn.setRequestProperty("Accept-Language", "zh-CN,zh;q=0.8,en;q=0.6,zh-TW;q=0.4");
 			conn.setRequestProperty("Connection", "keep-alive");
@@ -78,30 +81,35 @@ public class HttpRequest {
 			if (readTimeout > 0) {
 				conn.setReadTimeout(readTimeout);
 			}
+			Charset charset = Charsets.UTF_8;
 			if (headers != null && !headers.isEmpty()) {
 				for (String key : headers.keySet()) {
 					conn.setRequestProperty(key, headers.get(key));
+					if ("Accept-Charset".equalsIgnoreCase(key)) {
+						String value = headers.get(key);
+						if (value != null && !value.isEmpty()) {
+							charset = Charset.forName(value);
+						}
+					}
 				}
 			}
 			// read
 			conn.connect();
-			ins = conn.getInputStream();
-			ByteArrayOutputStream ous = new ByteArrayOutputStream();
-			byte[] b = new byte[1024];
+			reader = new InputStreamReader(conn.getInputStream(), charset);
+			char[] cbuf = new char[1024];
 			int len = 0;
-			while ((len = ins.read(b)) > -1) {
-				ous.write(b, 0, len);
+			while ((len = reader.read(cbuf)) > -1) {
+				content.append(cbuf, 0, len);
 			}
-			content = ous.toString();
 		} finally {
-			if (ins != null) {
-				ins.close();
+			if (reader != null) {
+				reader.close();
 			}
 			if (conn != null) {
 				conn.disconnect();
 			}
 		}
-		return content;
+		return content.toString();
 	}
 
 }

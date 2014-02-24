@@ -245,7 +245,7 @@ public class WeatherClient {
 				}
 			}
 		}
-		List<Map<String, String>> daily = new ArrayList<Map<String, String>>();
+		List<Map<String, String>> forecast = new ArrayList<Map<String, String>>();
 		String prevTime = null, prevHalf = null;
 		for (String table : tables) {
 			List<String> trs = Splitter.on("</tr>").omitEmptyStrings().splitToList(table);
@@ -313,13 +313,13 @@ public class WeatherClient {
 					map.put("weather", weather);
 					map.put("wd", wd);
 					map.put("ws", ws);
-					daily.add(map);
+					forecast.add(map);
 				}
 				prevTime = time;
 				prevHalf = half;
 			}
 		}
-		weatherinfo.put("daily", daily);
+		weatherinfo.put("forecast", forecast);
 		// result
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("weatherinfo", weatherinfo);

@@ -311,6 +311,7 @@ public class WeatherClient {
 					map.put("half", half);
 					map.put("image", image);
 					map.put("weather", weather);
+					map.put("temp", temp);
 					map.put("wd", wd);
 					map.put("ws", ws);
 					forecast.add(map);

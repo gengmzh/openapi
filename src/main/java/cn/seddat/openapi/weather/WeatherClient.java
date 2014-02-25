@@ -246,6 +246,7 @@ public class WeatherClient {
 			}
 		}
 		List<Map<String, String>> forecast = new ArrayList<Map<String, String>>();
+		final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
 		String prevTime = null, prevHalf = null;
 		for (String table : tables) {
 			List<String> trs = Splitter.on("</tr>").omitEmptyStrings().splitToList(table);
@@ -268,8 +269,7 @@ public class WeatherClient {
 						cal.add(Calendar.MONTH, 1);
 					}
 					cal.set(Calendar.DAY_OF_MONTH, day);
-					time = cal.get(Calendar.YEAR) + "." + (cal.get(Calendar.MONTH) + 1) + "."
-							+ cal.get(Calendar.DAY_OF_MONTH);
+					time = dateFormat.format(cal.getTime());
 				} else {
 					time = prevTime;
 				}

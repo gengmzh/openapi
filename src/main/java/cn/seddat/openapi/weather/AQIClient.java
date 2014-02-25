@@ -62,7 +62,7 @@ public class AQIClient {
 			if (line.contains("更新时间：")) {
 				int idx = line.indexOf("更新时间：") + 5;
 				String time = line.substring(idx, idx + 16);
-				weatherinfo.put("time", time);
+				weatherinfo.put("time", time.replace('-', '.'));
 				break;
 			}
 		}

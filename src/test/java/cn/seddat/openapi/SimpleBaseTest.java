@@ -19,6 +19,7 @@ public class SimpleBaseTest {
 
 		Object scheduler = context.getBean("weatherScheduler");
 		System.out.println(scheduler.getClass().getName());
+		
 	}
 
 }

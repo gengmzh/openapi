@@ -12,7 +12,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @since 2013-5-14 下午11:18:40
  * 
  */
-@ContextConfiguration(locations = { "classpath:/spring-mvc.xml", "classpath:/spring-weather.xml" })
+@ContextConfiguration(locations = { "classpath:/spring-mvc.xml", "classpath:/spring-core.xml" })
 @RunWith(SpringJUnit4ClassRunner.class)
 public class BaseTest {
 

@@ -15,7 +15,7 @@ import com.mongodb.MongoClientURI;
  * @author gengmaozhang01
  * @since 2014-2-22 下午4:08:56
  */
-@Service
+//@Service
 public class MongoService {
 
 	@Autowired

@@ -83,7 +83,7 @@ public class WeatherClient {
 		}
 		// query
 		try {
-			result = realtimeWeatherQuery.query(citycode);
+			result = forecastWeatherQuery.query(citycode);
 		} catch (Exception ex) {
 			log.error("query forecast weather failed", ex);
 		}

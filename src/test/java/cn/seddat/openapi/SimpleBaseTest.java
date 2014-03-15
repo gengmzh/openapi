@@ -4,8 +4,8 @@
 package cn.seddat.openapi;
 
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import com.google.common.base.Optional;
 
 /**
  * @author gengmaozhang01
@@ -13,13 +13,19 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 public class SimpleBaseTest {
 
-	@Test
-	public void test_spring() throws Exception {
-		ApplicationContext context = new ClassPathXmlApplicationContext("spring-weather.xml");
+	// @Test
+	// public void test_spring() throws Exception {
+	// ApplicationContext context = new ClassPathXmlApplicationContext("spring-weather.xml");
+	//
+	// Object scheduler = context.getBean("weatherScheduler");
+	// System.out.println(scheduler.getClass().getName());
+	// }
 
-		Object scheduler = context.getBean("weatherScheduler");
-		System.out.println(scheduler.getClass().getName());
-		
+	@Test
+	public void test_optional() {
+		Object obj = null;
+		String result = Optional.fromNullable(obj).or("sdfs").toString();
+		System.out.println(result);
 	}
 
 }

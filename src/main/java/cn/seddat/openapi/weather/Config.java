@@ -275,12 +275,26 @@ public class Config {
 	 * @author gengmaozhang01
 	 * @since 2014-2-6 下午10:38:22
 	 */
-	public String getAQIUrl(String citycode) {
+	public String getCNPM25AQIUrl(String citycode) {
 		String aqiCode = this.getAQICode(citycode);
 		if (aqiCode == null || aqiCode.isEmpty()) {
 			throw new IllegalArgumentException("citycode " + citycode + " is illegal, can't find AQI code");
 		}
 		return URL_PREFIX_PM25 + aqiCode + URL_SUFFIX;
+	}
+
+	/**
+	 * 获取AQI接口URL，citycode为城市代码
+	 * 
+	 * @author gengmaozhang01
+	 * @since 2014-3-15 上午11:32:35
+	 */
+	public String getCNPM25AQIAPI(String citycode) {
+		String aqiCode = this.getAQICode(citycode);
+		if (aqiCode == null || aqiCode.isEmpty()) {
+			throw new IllegalArgumentException("citycode " + citycode + " is illegal, can't find AQI code");
+		}
+		return "http://appapi.cnpm25.cn/TopInfoWeb.aspx?u=" + aqiCode;
 	}
 
 }

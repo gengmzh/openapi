@@ -25,6 +25,7 @@ public class WeatherClientBaseTest extends BaseTest {
 	public void test_queryRealtimeWeather() throws Exception {
 		String citycode = "101010100";
 		Map<String, Object> weather = weatherClientService.queryRealtimeWeather(citycode);
+		weather = weatherClientService.queryRealtimeWeather(citycode);
 
 		Assert.assertNotNull(weather);
 		ObjectMapper mapper = new ObjectMapper();

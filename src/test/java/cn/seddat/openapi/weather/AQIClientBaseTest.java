@@ -19,11 +19,12 @@ import cn.seddat.openapi.BaseTest;
 public class AQIClientBaseTest extends BaseTest {
 
 	@Autowired
-	private AQIClient aqiClientService;
+	private AQIClient aqiClient;
 
 	@Test
 	public void test_queryAirQualityIndex() throws Exception {
-		Map<String, Object> aqi = aqiClientService.queryAirQualityIndex("101010700");
+		Map<String, Object> aqi = aqiClient.queryAirQualityIndex("101010700");
+		aqi = aqiClient.queryAirQualityIndex("101010700");
 
 		Assert.assertNotNull(aqi);
 		ObjectMapper mapper = new ObjectMapper();

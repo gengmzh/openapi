@@ -25,9 +25,9 @@ public class WeatherController {
 	private final Log log = LogFactory.getLog(WeatherController.class);
 
 	@Autowired
-	private WeatherClient weatherClientService;
+	private WeatherClient weatherClient;
 	@Autowired
-	private AQIClient aqiClientService;
+	private AQIClient aqiClient;
 
 	@ResponseBody
 	@RequestMapping(value = "/realtime/{citycode}", method = RequestMethod.GET)
@@ -41,7 +41,7 @@ public class WeatherController {
 		}
 		// request
 		try {
-			Map<String, Object> weather = weatherClientService.queryRealtimeWeather(citycode);
+			Map<String, Object> weather = weatherClient.queryRealtimeWeather(citycode);
 			model.addAttribute("code", 0);
 			model.putAll(weather);
 		} catch (Exception ex) {
@@ -64,7 +64,7 @@ public class WeatherController {
 		}
 		// request
 		try {
-			Map<String, Object> weather = weatherClientService.queryForecastWeather(citycode);
+			Map<String, Object> weather = weatherClient.queryForecastWeather(citycode);
 			model.addAttribute("code", 0);
 			model.putAll(weather);
 		} catch (Exception ex) {
@@ -87,7 +87,7 @@ public class WeatherController {
 		}
 		// request
 		try {
-			Map<String, Object> weather = aqiClientService.queryAirQualityIndex(citycode);
+			Map<String, Object> weather = aqiClient.queryAirQualityIndex(citycode);
 			model.addAttribute("code", 0);
 			model.putAll(weather);
 		} catch (Exception ex) {

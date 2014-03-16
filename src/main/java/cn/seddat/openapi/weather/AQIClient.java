@@ -3,6 +3,7 @@
  */
 package cn.seddat.openapi.weather;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
@@ -63,12 +64,29 @@ public class AQIClient {
 				log.error("query AQI by web failed", ex);
 			}
 		}
-		if (result == null || result.isEmpty()) {
+		if (this.isAQIEmpty(result)) {
 			throw new Exception("query AQI failed, result is empty");
 		} else {
 			easyCache.set(key, result, cacheSeconds);
 		}
 		return result;
+	}
+
+	@SuppressWarnings("unchecked")
+	private boolean isAQIEmpty(Map<String, Object> result) {
+		if (result == null || result.isEmpty()) {
+			return true;
+		}
+		Map<String, Object> weatherinfo = (Map<String, Object>) result.get("weatherinfo");
+		if (weatherinfo == null || weatherinfo.isEmpty()) {
+			return true;
+		}
+		Object hourly = weatherinfo.get("hourly"), daily = weatherinfo.get("daily");
+		if ((hourly == null || !List.class.isInstance(hourly) || ((List<Object>) hourly).isEmpty())
+				&& (daily == null || !List.class.isInstance(daily) || ((List<Object>) daily).isEmpty())) {
+			return true;
+		}
+		return false;
 	}
 
 }

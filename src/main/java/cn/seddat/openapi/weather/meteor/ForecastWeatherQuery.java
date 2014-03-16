@@ -109,7 +109,7 @@ public class ForecastWeatherQuery {
 			}
 		}
 		String time = null;
-		final SimpleDateFormat publishFormat = new SimpleDateFormat("yyyy.MM.dd HH:00:00");
+		final SimpleDateFormat publishFormat = new SimpleDateFormat("yyyy.MM.dd HH:00");
 		if (title != null && !title.isEmpty()) {
 			log.info("title: " + title);
 			try {

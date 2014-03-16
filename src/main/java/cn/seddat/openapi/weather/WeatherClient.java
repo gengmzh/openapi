@@ -3,6 +3,7 @@
  */
 package cn.seddat.openapi.weather;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
@@ -56,12 +57,24 @@ public class WeatherClient {
 		} catch (Exception ex) {
 			log.error("query realtime weather failed", ex);
 		}
-		if (result == null || result.isEmpty()) {
+		if (this.isRealtimeEmpty(result)) {
 			throw new Exception("realtime weather is empty");
 		} else {
 			easyCache.set(key, result, cacheSeconds);
 		}
 		return result;
+	}
+
+	@SuppressWarnings("unchecked")
+	private boolean isRealtimeEmpty(Map<String, Object> result) {
+		if (result == null || result.isEmpty()) {
+			return true;
+		}
+		Map<String, Object> weatherinfo = (Map<String, Object>) result.get("weatherinfo");
+		if (weatherinfo == null || weatherinfo.isEmpty() || !weatherinfo.containsKey("temp")) {
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -87,12 +100,28 @@ public class WeatherClient {
 		} catch (Exception ex) {
 			log.error("query forecast weather failed", ex);
 		}
-		if (result == null || result.isEmpty()) {
+		if (this.isForecastEmpty(result)) {
 			throw new Exception("forecast weather is empty");
 		} else {
 			easyCache.set(key, result, cacheSeconds);
 		}
 		return result;
+	}
+
+	@SuppressWarnings("unchecked")
+	private boolean isForecastEmpty(Map<String, Object> result) {
+		if (result == null || result.isEmpty()) {
+			return true;
+		}
+		Map<String, Object> weatherinfo = (Map<String, Object>) result.get("weatherinfo");
+		if (weatherinfo == null || weatherinfo.isEmpty()) {
+			return true;
+		}
+		List<Object> forecast = (List<Object>) weatherinfo.get("forecast");
+		if (forecast == null || forecast.isEmpty()) {
+			return true;
+		}
+		return false;
 	}
 
 }

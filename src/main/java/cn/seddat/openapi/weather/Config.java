@@ -297,4 +297,18 @@ public class Config {
 		return "http://appapi.cnpm25.cn/TopInfoWeb.aspx?u=" + aqiCode;
 	}
 
+	/**
+	 * 获取pm25.in站点的AQI接口URL，citycode为城市代码
+	 * 
+	 * @author gengmaozhang01
+	 * @since 2014-3-16 下午6:05:08
+	 */
+	public String getPM25INAQIAPI(String citycode) {
+		String aqiCode = this.getAQICode(citycode);
+		if (aqiCode == null || aqiCode.isEmpty()) {
+			throw new IllegalArgumentException("citycode " + citycode + " is illegal, can't find AQI code");
+		}
+		return "http://www.pm25.in/api/querys/aqi_details.json?token=AQCbX9VKuX597AbjAtfG&stations=no&city=" + aqiCode;
+	}
+
 }

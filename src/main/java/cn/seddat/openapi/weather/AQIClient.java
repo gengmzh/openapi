@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import cn.seddat.openapi.weather.aqi.CNPM25APIAQIQuery;
 import cn.seddat.openapi.weather.aqi.CNPM25WebAQIQuery;
+import cn.seddat.openapi.weather.aqi.PM25INAQIQuery;
 
 /**
  * 空气质量指数服务
@@ -29,6 +30,8 @@ public class AQIClient {
 	private CNPM25APIAQIQuery cnpm25APIAQIQuery;
 	@Autowired
 	private CNPM25WebAQIQuery cnpm25WebAQIQuery;
+	@Autowired
+	private PM25INAQIQuery pm25inAQIQuery;
 	@Autowired
 	private EasyCache easyCache;
 
@@ -64,10 +67,14 @@ public class AQIClient {
 				log.error("query AQI by web failed", ex);
 			}
 		}
-		if (this.isAQIEmpty(result)) {
-			throw new Exception("query AQI failed, result is empty");
-		} else {
+		if (!this.isAQIEmpty(result)) {
 			easyCache.set(key, result, cacheSeconds);
+			return result;
+		}
+		log.warn("can't get AQI from cnpm25.cn");
+		result = pm25inAQIQuery.query(citycode);
+		if (result == null || result.isEmpty() || !result.containsKey("weatherinfo")) {
+			throw new Exception("query AQI failed, result is empty");
 		}
 		return result;
 	}

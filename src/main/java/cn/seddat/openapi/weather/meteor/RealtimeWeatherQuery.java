@@ -71,52 +71,54 @@ public class RealtimeWeatherQuery {
 			boolean isSection = false;
 			for (String line : lines) {
 				if (!isSection) {
-					isSection = line.indexOf("<section") > -1 && line.indexOf("class=\"detail") > -1;
+					isSection = line.indexOf("<section") > -1 && line.indexOf("class=\"mask") > -1;
 				}
 				if (isSection) {
 					index.append(line);
 					if (line.indexOf("</aside>") > -1) {
 						String type = null;
-						if (index.indexOf("class=\"detail ct\"") > -1) {
+						if (index.indexOf("class=\"mask ct\"") > -1) {
 							type = "ct"; // 穿衣指数
-						} else if (index.indexOf("class=\"detail tr\"") > -1) {
+						} else if (index.indexOf("class=\"mask tr\"") > -1) {
 							type = "tr"; // 旅游指数
-						} else if (index.indexOf("class=\"detail yd\"") > -1) {
+						} else if (index.indexOf("class=\"mask yd\"") > -1) {
 							type = "yd"; // 运动指数
-						} else if (index.indexOf("class=\"detail xc\"") > -1) {
+						} else if (index.indexOf("class=\"mask xc\"") > -1) {
 							type = "xc"; // 洗车指数
-						} else if (index.indexOf("class=\"detail pp\"") > -1) {
+						} else if (index.indexOf("class=\"mask pp\"") > -1) {
 							type = "pp"; // 化妆指数
-						} else if (index.indexOf("class=\"detail gm\"") > -1) {
+						} else if (index.indexOf("class=\"mask gm\"") > -1) {
 							type = "gm"; // 感冒指数
-						} else if (index.indexOf("class=\"detail uv\"") > -1) {
+						} else if (index.indexOf("class=\"mask uv\"") > -1) {
 							type = "uv"; // 紫外线指数
-						} else if (index.indexOf("class=\"detail co\"") > -1) {
+						} else if (index.indexOf("class=\"mask co\"") > -1) {
 							type = "co"; // 舒适度指数
-						} else if (index.indexOf("class=\"detail ag\"") > -1) {
+						} else if (index.indexOf("class=\"mask ag\"") > -1) {
 							type = "ag"; // 过敏指数
-						} else if (index.indexOf("class=\"detail gj\"") > -1) {
+						} else if (index.indexOf("class=\"mask gj\"") > -1) {
 							type = "gj"; // 逛街指数
-						} else if (index.indexOf("class=\"detail mf\"") > -1) {
+						} else if (index.indexOf("class=\"mask mf\"") > -1) {
 							type = "mf"; // 美发指数
-						} else if (index.indexOf("class=\"detail ys\"") > -1) {
+						} else if (index.indexOf("class=\"mask ys\"") > -1) {
 							type = "ys"; // 雨伞指数
-						} else if (index.indexOf("class=\"detail jt\"") > -1) {
+						} else if (index.indexOf("class=\"mask jt\"") > -1) {
 							type = "jt"; // 交通指数
-						} else if (index.indexOf("class=\"detail lk\"") > -1) {
+						} else if (index.indexOf("class=\"mask lk\"") > -1) {
 							type = "lk"; // 路况指数
-						} else if (index.indexOf("class=\"detail cl\"") > -1) {
+						} else if (index.indexOf("class=\"mask cl\"") > -1) {
 							type = "cl"; // 晨练指数
-						} else if (index.indexOf("class=\"detail dy\"") > -1) {
+						} else if (index.indexOf("class=\"mask dy\"") > -1) {
 							type = "dy"; // 钓鱼指数
-						} else if (index.indexOf("class=\"detail hc\"") > -1) {
+						} else if (index.indexOf("class=\"mask hc\"") > -1) {
 							type = "hc"; // 划船指数
-						} else if (index.indexOf("class=\"detail yh\"") > -1) {
+						} else if (index.indexOf("class=\"mask yh\"") > -1) {
 							type = "yh"; // 约会指数
-						} else if (index.indexOf("class=\"detail ls\"") > -1) {
+						} else if (index.indexOf("class=\"mask ls\"") > -1) {
 							type = "ls"; // 晾晒指数
-						} else if (index.indexOf("class=\"detail fs\"") > -1) {
+						} else if (index.indexOf("class=\"mask fs\"") > -1) {
 							type = "fs"; // 防晒指数
+						} else if (index.indexOf("class=\"mask gl\"") > -1) {
+							type = "gl"; // 太阳镜指数
 						}
 						int si = index.indexOf("<b>") + 3, ei = index.indexOf("</b>", si);
 						String idx = index.substring(si, ei);

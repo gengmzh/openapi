@@ -91,6 +91,9 @@ public class CNPM25APIAQIQuery {
 			}
 		}
 		weatherinfo.put("hourly", hourly);
+		if (!hourly.isEmpty()) { // fix current aqi
+			weatherinfo.put("AQI", hourly.get(hourly.size() - 1).get("AQI"));
+		}
 		// daily
 		List<Map<String, String>> daily = Lists.newArrayList();
 		if (trend != null) {

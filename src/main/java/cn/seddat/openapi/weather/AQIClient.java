@@ -58,23 +58,26 @@ public class AQIClient {
 		try {
 			result = cnpm25APIAQIQuery.query(citycode);
 		} catch (Exception ex) {
-			log.error("query AQI by api failed", ex);
+			log.error("query AQI by appapi.cnpm25.cn failed", ex);
 		}
-		if (result == null || result.isEmpty()) {
+		if (this.isAQIEmpty(result)) {
 			try {
 				result = cnpm25WebAQIQuery.query(citycode);
 			} catch (Exception ex) {
-				log.error("query AQI by web failed", ex);
+				log.error("query AQI by www.cnpm25.cn failed", ex);
 			}
 		}
-		if (!this.isAQIEmpty(result)) {
-			easyCache.set(key, result, cacheSeconds);
-			return result;
+		if (this.isAQIEmpty(result)) {
+			try {
+				result = pm25inAQIQuery.query(citycode);
+			} catch (Exception ex) {
+				log.error("query AQI by www.pm25.in/api failed", ex);
+			}
 		}
-		log.warn("can't get AQI from cnpm25.cn");
-		result = pm25inAQIQuery.query(citycode);
-		if (result == null || result.isEmpty() || !result.containsKey("weatherinfo")) {
-			throw new Exception("query AQI failed, result is empty");
+		if (this.isAQIEmpty(result)) {
+			log.warn("query AQI failed");
+		} else {
+			easyCache.set(key, result, cacheSeconds);
 		}
 		return result;
 	}

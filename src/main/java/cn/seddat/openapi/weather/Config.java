@@ -311,4 +311,18 @@ public class Config {
 		return "http://www.pm25.in/api/querys/aqi_details.json?token=AQCbX9VKuX597AbjAtfG&stations=no&city=" + aqiCode;
 	}
 
+	/**
+	 * 获取pm25.in站点的AQI网页URL，citycode为城市代码
+	 * 
+	 * @author gengmaozhang01
+	 * @since 2014-10-26 下午5:28:44
+	 */
+	public String getPM25INAQIUrl(String citycode) {
+		String aqiCode = this.getAQICode(citycode);
+		if (aqiCode == null || aqiCode.isEmpty()) {
+			throw new IllegalArgumentException("citycode " + citycode + " is illegal, can't find AQI code");
+		}
+		return "http://www.pm25.in/" + aqiCode;
+	}
+
 }

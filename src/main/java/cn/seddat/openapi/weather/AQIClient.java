@@ -74,6 +74,7 @@ public class AQIClient {
 				log.error("query AQI by www.pm25.in/api failed", ex);
 			}
 		}
+		// result
 		if (this.isAQIEmpty(result)) {
 			log.warn("query AQI failed");
 		} else {

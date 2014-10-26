@@ -116,7 +116,7 @@ public class PM25INAQIQuery {
 					String data = datas.get(i);
 					if (!data.isEmpty() && !"null".equalsIgnoreCase(data)) {
 						cal.add(Calendar.HOUR_OF_DAY, -1);
-						hourly.add(ImmutableMap.of("time", format.format(cal.getTime()), "AQI", data));
+						hourly.add(0, ImmutableMap.of("time", format.format(cal.getTime()), "AQI", data));
 					}
 				}
 				break;
